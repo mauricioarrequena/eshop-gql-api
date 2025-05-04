@@ -1,15 +1,27 @@
+import express from "express";
+import { ApolloServer } from "apollo-server-express";
+import { AppDataSource } from "./data-source";
+import { userTypeDefs } from "./schema/user";
+import { userResolvers } from "./resolvers/user";
+import { productTypeDefs } from "./schema/product";
+import { productResolvers } from "./resolvers/product";
+import { reviewTypeDefs } from "./schema/review";
+import { reviewResolvers } from "./resolvers/review";
 
-import express from 'express';
-import { Request, Response } from 'express';
+async function startServer() {
+  await AppDataSource.initialize();
+  const app = express();
 
-const app = express();
-const port = 3000; // Define port here
+  const server = new ApolloServer({
+    typeDefs: [userTypeDefs, productTypeDefs, reviewTypeDefs],
+    resolvers: [userResolvers, productResolvers, reviewResolvers],
+  });
+  await server.start();
+  server.applyMiddleware({ app: app as any });
 
-app.get('/', (req: Request, res: Response) => {
-  res.send('Hello World!');
-});
+  app.listen(4000, () =>
+    console.log(`🚀 Server ready at http://localhost:4000${server.graphqlPath}`)
+  );
+}
 
-app.listen(port, () => {
-  console.log(`Server running at http://localhost:${port}`);
-});
-  
+startServer();
