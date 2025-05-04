@@ -1,5 +1,6 @@
 // src/entities/User.ts
-import { Entity, PrimaryGeneratedColumn, Column } from 'typeorm';
+import { Entity, PrimaryGeneratedColumn, Column, OneToMany } from "typeorm";
+import { Review } from "./Review";
 
 @Entity()
 export class User {
@@ -11,4 +12,7 @@ export class User {
 
   @Column()
   email!: string;
+
+  @OneToMany(() => Review, (review) => review.user)
+  reviews!: Review[];
 }

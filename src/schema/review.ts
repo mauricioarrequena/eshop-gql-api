@@ -5,6 +5,8 @@ export const reviewTypeDefs = gql`
     id: ID!
     stars: Int!
     comment: String!
+    user: User!
+    product: Product!
   }
 
   type Query {
@@ -12,7 +14,7 @@ export const reviewTypeDefs = gql`
   }
 
   type Mutation {
-    createReview(stars: Int!, comment: String!): Review!
+    createReview(stars: Int!, comment: String!, userId: Int!, productId: Int!): Review!
   }
 
 `;

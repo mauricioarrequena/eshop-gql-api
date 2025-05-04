@@ -1,4 +1,6 @@
-import { Entity, PrimaryGeneratedColumn, Column } from "typeorm";
+import { Entity, PrimaryGeneratedColumn, Column, ManyToOne } from "typeorm";
+import { User } from "./User";
+import { Product } from "./Product";
 
 @Entity()
 export class Review {
@@ -11,4 +13,10 @@ export class Review {
   @Column()
   comment!: string;
 
+  
+  @ManyToOne(() => User, (user) => user.reviews, { eager: true })
+  user!: User;
+
+  @ManyToOne(() => Product, (product) => product.reviews, { eager: true })
+  product!: Product;
 }
